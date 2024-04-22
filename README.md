@@ -7,5 +7,5 @@ Init with the initial values. Add the city to a list of structs of cities. Check
 If it is just update the parameters otherwise create a new city. If the end of the file is reached,
 call the average function. The function will go through the list of city structs and calculate the
 average for every city using the data points in the struct. At the end we call the print function,
-the print city function prints the city and its values as follows "<City Name>;<min/average/max>"
+the print city function prints the city and its values as follows "<City\Name>;<min/average/max>"
 
