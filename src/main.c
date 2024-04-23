@@ -1,3 +1,4 @@
+#include <string.h>
 #include<stddef.h>
 #include<stdlib.h>
 #include<stdio.h>
@@ -38,9 +39,10 @@ City create_city(const char* name, float temperature){
     return *newCity;
 }
 
-void cityCalculations(FILE *file){
+void calculations(FILE *file){
     int i = 0;
-    City cities[MAX_ROWS];
+    City *cities[MAX_ROWS];
+
     char line[MAX_CHAR];
     char lineCopy[MAX_CHAR];
     int rows = 0;
@@ -61,14 +63,36 @@ void cityCalculations(FILE *file){
     }
 
     //printf("%s", data[0]);
-    arrayPrint(numberTokens, data);
+    //arrayPrint(numberTokens, data);
+
+    for(int i = 0; i <= sizeof(data); i++){
+        if(i%2 == 0){
+            if(strcmp(data[i], cities[i])!=0){
+                *cities[i] = create_city(data[i], *data[i+1]);
+            } // creates a new city and adds its data to the struct
+            if(strcmp(data[i], cities[i])!=0){
+               cities[i]->total_temperature += *data[i+1];
+               cities[i]->total_data_points++;
+               if(cities[i]->min > *data[i+1]){
+                   cities[i]->min = *data[i+1];
+               } // update min if necesary
+               if(cities[i]->max < *data[i+1]){
+                   cities[i]->max = *data[i+1];
+               } // update max if necesary
+            }
+        }
+    }
 }
+
+
 
 int main(){
     FILE *file;
     file = fopen("data/testData2.csv", "r");
 
-    cityCalculations(file);
+    // cityCalculations(file);
+
+    //intoStruct(toArray(file));
 
     fclose(file);
 }
