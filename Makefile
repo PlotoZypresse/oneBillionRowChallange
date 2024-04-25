@@ -1,5 +1,5 @@
 #compiler settings
-CC = clang
+CC = gcc
 CFLAGS=-Wall -Wextra -g -O3
 SRC_DIR = src
 DATA_DIR = data
