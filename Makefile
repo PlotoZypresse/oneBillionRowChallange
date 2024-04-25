@@ -1,6 +1,6 @@
 #compiler settings
 CC = clang
-CFLAGS=-Wall -Wextra -g
+CFLAGS=-Wall -Wextra -g -O3
 SRC_DIR = src
 DATA_DIR = data
 BIN_DIR = bin

@@ -6,7 +6,7 @@
 #include<stdbool.h>
 
 #define MAX_ROWS 50000
-#define MAX_CHAR 100
+#define MAX_CHAR 50
 
 
 typedef struct {
@@ -18,17 +18,12 @@ typedef struct {
     int total_data_points;      // Total number of temperature data points for the city
 } City;
 
-//prints an array
-void arrayPrint(int max, char *data[]){
-    for(int i = 0; i < max; i++){
-        printf("%s ", data[i]);
-    }
-}
-
 // creates a city
 City create_city(const char* name, float temperature){
     City* newCity = malloc(sizeof(City));
-
+    if(newCity == NULL){
+        printf("ERROR allocating new City");
+    }
     strcpy(newCity->name, name);
     newCity->total_temperature = temperature;
     newCity->min = temperature;
@@ -39,62 +34,82 @@ City create_city(const char* name, float temperature){
     return *newCity;
 }
 
-void calculations(FILE *file){
-    int i = 0;
-    City *cities[MAX_ROWS];
 
+void calculations(FILE *file){
+    int numberCities = 0;
+    City *cities[MAX_ROWS] = {NULL};
     char line[MAX_CHAR];
-    char lineCopy[MAX_CHAR];
-    int rows = 0;
     char *data[MAX_ROWS];
     int numberTokens = 0;
 
-
     while(fgets(line, MAX_CHAR, file)){
-        strcpy(lineCopy, line);
-
-        char *token = strtok(lineCopy, ";");
+        char *token = strtok(line, ";");
         while (token != NULL) {
             data[numberTokens] = strdup(token);
             numberTokens++;
             token = strtok(NULL, ";");
-            // printf("%s ", token);
         }
     }
 
-    //printf("%s", data[0]);
-    //arrayPrint(numberTokens, data);
-
-    for(int i = 0; i <= sizeof(data); i++){
-        if(i%2 == 0){
-            if(strcmp(data[i], cities[i])!=0){
-                *cities[i] = create_city(data[i], *data[i+1]);
-            } // creates a new city and adds its data to the struct
-            if(strcmp(data[i], cities[i])!=0){
-               cities[i]->total_temperature += *data[i+1];
-               cities[i]->total_data_points++;
-               if(cities[i]->min > *data[i+1]){
-                   cities[i]->min = *data[i+1];
-               } // update min if necesary
-               if(cities[i]->max < *data[i+1]){
-                   cities[i]->max = *data[i+1];
-               } // update max if necesary
+    for(int i = 0; i < numberTokens; i+=2){
+        int cityFound = 0;
+        //search for a city
+        for(int j = 0; j < numberCities; j++){
+            if(strcmp(data[i], cities[j]->name) == 0){
+               cityFound = 1;
+               //update data
+               cities[j]->total_temperature += atof(data[i+1]);
+               cities[j]->total_data_points++;
+               // update min if necesary
+               float temperature = atof(data[i+1]);
+               if(cities[j]->min > temperature){
+                   cities[j]->min = temperature;
+               }
+               // update max if necesary
+               if(cities[j]->max < temperature){
+                   cities[j]->max = temperature;
+               }
+               break;
             }
         }
+    if(!cityFound){
+        //allocate memory for a new city
+        cities[numberCities] = (City*)malloc(sizeof(City));
+        if (cities[numberCities] == NULL) {
+            perror("Error allocating memory for City");
+            exit(EXIT_FAILURE);
+        }
+        //create and initialize the new city
+        *cities[numberCities] = create_city(data[i], atof(data[i+1]));
+        numberCities++;
+        }
+    }
+
+    // free ing data array
+    for (int i = 0; i < numberTokens; i++) {
+            free(data[i]); // Free allocated memory for data
+    }
+
+    for(int i = 0; i < numberCities; i++){
+        cities[i]->average = cities[i]->total_temperature/cities[i]->total_data_points;
+    }
+
+    for(int i = 0; i < numberCities; i++){
+        printf("%s = %.2f/%.2f/%.2f\n", cities[i]->name, cities[i]->min, cities[i]->average, cities[i]->max);
+        free(cities[i]);
     }
 }
 
-
-
 int main(){
     FILE *file;
-    file = fopen("data/testData2.csv", "r");
-
-    // cityCalculations(file);
-
-    //intoStruct(toArray(file));
-
+    file = fopen("data/test2K.csv", "r");
+    if (file == NULL){
+            perror("Error opening file");
+            return 1;
+    }
+    calculations(file);
     fclose(file);
+    return 0;
 }
 
 
