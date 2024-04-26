@@ -10,7 +10,7 @@
 
 
 typedef struct {
-    char name[MAX_CHAR];
+    char name[MAX_CHAR];        // city name
     float total_temperature;    // total temperature
     float min;                  // lowest temperature
     float max;                  // maximum temperature
@@ -39,18 +39,8 @@ City* create_city(const char* name, float temperature){
 void calculations(FILE *file){
     int numberCities = 0;
     City **cities = NULL;
-    // malloc(MAX_ROWS * sizeof(City*));
-    // if(cities == NULL){
-    //     printf("ERROR allocating array of city structs");
-    //     exit(EXIT_FAILURE);
-    // }
     char line[MAX_CHAR];
     char **data = NULL;
-    // malloc(MAX_ROWS * sizeof(char*));
-    // if(data == NULL){
-    //     printf("ERROR allocating data array");
-    //     exit(EXIT_FAILURE);
-    // }
     int numberTokens = 0;
     int totalTokens = 0;
 
@@ -73,18 +63,15 @@ void calculations(FILE *file){
 
         int cityFound = 0;
 
-        // for(int i = 0; i < numberTokens; i+=2) {
-        //     char* cityName = data[i];
-        //     float temperature = atof(data[i+1]);
-
-        
-            // Search for a city
+        // Search for a city
         for(int j = 0; j < numberCities; j++) {
             if(strcmp(cityName, cities[j]->name) == 0) {
                 cityFound = 1;
+
                 // Update data
                 cities[j]->total_temperature += temperature;
                 cities[j]->total_data_points++;
+
                 // Update min if necessary
                 if(cities[j]->min > temperature) {
                     cities[j]->min = temperature;
@@ -105,9 +92,8 @@ void calculations(FILE *file){
             }
             cities[numberCities] = create_city(cityName, temperature);
             numberCities++;
+        }
     }
-}
-
     // freeing data array
     for (int i = 0; i < numberTokens; i++) {
             free(data[i]); // Free allocated memory for data
@@ -138,13 +124,3 @@ int main(){
     fclose(file);
     return 0;
 }
-
-
-/*
-loop throug list if a city is encountered the first time create a city struct.
-Init with the initial values. Add the city to a list of structs of cities. Check everytime if the city is in the struct.
-If it is just update the parameters otherwise create a new city. If the end of the file is reached,
-call the average function. The function will go through the list of city structs and calculate the
-average for every city using the data points in the struct. At the end we call the print function,
-the print city function prints the city and its values as follows "<City Name>;<min/average/max>"
-*/
