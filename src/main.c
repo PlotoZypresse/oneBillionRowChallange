@@ -115,7 +115,7 @@ void calculations(FILE *file){
 
 int main(){
     FILE *file;
-    file = fopen("data/weather_stations.csv", "r");
+    file = fopen("data/measurements1m.txt", "r");
     if (file == NULL){
             perror("Error opening file");
             return 1;

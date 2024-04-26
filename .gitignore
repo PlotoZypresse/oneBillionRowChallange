@@ -1,0 +1,100 @@
+# Object files
+*.o
+*.obj
+*.so
+*.lib
+*.dll
+*.exe
+*.out
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.a
+*.la
+
+# Binary and Executable files
+*.exe
+*.out
+*.app
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+
+# Dependencies
+*.d
+
+# Editor and IDE files
+*~
+*.swp
+*.swo
+.vscode/
+*.sublime-workspace
+*.sublime-project
+.idea/
+*.project
+*.cproject
+*.settings/
+
+# Autotools files
+autom4te.cache
+aclocal.m4
+autoconf.h
+config.status
+config.log
+configure
+Makefile.in
+Makefile
+*.make
+*.cache
+*.aux
+*.lo
+*.la
+*.lai
+*.so
+*.so.*
+*.dylib
+
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
+*.dylib
+*.su
+*.idb
+*.pdb
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executable and Object files from Makefiles
+!a.out
+!*.o
+
+# Backup files
+*.bak
+
+# Other
+.DS_Store
+*.eps
